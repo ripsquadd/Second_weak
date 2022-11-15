@@ -19,3 +19,24 @@ class User(AbstractUser):
 
     class Meta(AbstractUser.Meta):
         pass
+
+
+class Request(models.Model):
+    name = models.CharField(max_length=250, verbose_name='Имя', blank=False)
+    detail = models.CharField(max_length=250, verbose_name='Описание', blank=False)
+    category = models.ForeignKey('Category', verbose_name='Категория', on_delete=models.CASCADE)
+    creation_date = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
+    photo = models.ImageField(max_length=250, upload_to="img/", blank=False)
+    status = models.CharField(max_length=60, verbose_name='Статус',
+                              choices=(('new', 'новая'), ('work', 'принято в работу'), ('completed', 'выполнено')),
+                              default='new', blank=False)
+
+    def __str__(self):
+        return str(self.name) + ' ' + str(self.category)
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=250, verbose_name='Имя', blank=False)
+
+    def __str__(self):
+        return str(self.name)

@@ -5,10 +5,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from .forms import RegisterUserForm
+from .models import Request
 
 
 def index(request):
-    return render(request, 'main/index.html')
+
+    counter = Request.objects.filter(status="work").all().count()
+    completed_requests = Request.objects.filter(status="completed").order_by('-creation_date')[:4]
+    return render(request, 'main/index.html', {'completed_requests': completed_requests, 'counter': counter})
 
 class WPLoginView(LoginView):
     template_name = 'main/login.html'

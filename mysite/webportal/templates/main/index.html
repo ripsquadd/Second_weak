@@ -1,0 +1,11 @@
+{% extends "layout/basic.html" %}
+
+{% block content %}
+   <h4>Заявок в работе: {{ counter }}</h4>
+   {% for elem in rec %}
+      <div class="d-flex justify-content-between align-items-baseline p-3 text-dark">
+           <p><strong>Название:{{ elem.name }} | Категория:{{ elem.category }} | Временная метка:{{ elem.date }}</strong><p>
+            <img class='' src="{{ elem.photo.url }}">
+      </div>
+   {% endfor %}
+{% endblock %}

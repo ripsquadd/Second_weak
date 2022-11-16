@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
@@ -28,3 +28,11 @@ class WPRegisterViews(CreateView):
     template_name = 'main/register.html'
     form_class = RegisterUserForm
     success_url = reverse_lazy('webportal:login')
+
+@login_required
+def delete(request, id):
+    request_id = Request.objects.filter(id=id)
+    if request.method == 'POST':
+        request_id.delete()
+        return redirect('profile')
+    return render(request, 'main/profile.html')

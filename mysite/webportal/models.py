@@ -30,6 +30,7 @@ class Request(models.Model):
     status = models.CharField(max_length=60, verbose_name='Статус',
                               choices=(('new', 'новая'), ('work', 'принято в работу'), ('completed', 'выполнено')),
                               default='new', blank=False)
+    id = models.AutoField(primary_key=True)
 
     def __str__(self):
         return str(self.name) + ' ' + str(self.category)

@@ -1,30 +1,31 @@
 from django import forms
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
-from .models import User
+from django.forms import ModelForm
+from .models import User, Request
 
 
-class RegisterUserForm(forms.ModelForm):
+class RegisterUserForm(ModelForm):
     first_name = forms.CharField(label='Имя',
-                           validators=[RegexValidator('^[а-яА-Я- ]+$',
-                                                      message='только кирилица и тире')],
-                           error_messages={
-                               'required': 'Обязательное поле',
-                           })
-
-    last_name = forms.CharField(label='Фамилия',
-                              validators=[RegexValidator('^[а-яА-Я- ]+$',
-                                                         message='только кирилица и тире')],
-                              error_messages={
-                                  'required': 'Обязательное поле',
-                              })
-
-    second_name = forms.CharField(label='Отчество',
                                  validators=[RegexValidator('^[а-яА-Я- ]+$',
                                                             message='только кирилица и тире')],
                                  error_messages={
                                      'required': 'Обязательное поле',
                                  })
+
+    last_name = forms.CharField(label='Фамилия',
+                                validators=[RegexValidator('^[а-яА-Я- ]+$',
+                                                           message='только кирилица и тире')],
+                                error_messages={
+                                    'required': 'Обязательное поле',
+                                })
+
+    second_name = forms.CharField(label='Отчество',
+                                  validators=[RegexValidator('^[а-яА-Я- ]+$',
+                                                             message='только кирилица и тире')],
+                                  error_messages={
+                                      'required': 'Обязательное поле',
+                                  })
     username = forms.CharField(label='Логин',
                                validators=[RegexValidator('^[a-zA-z-]+$',
                                                           message='только латиница и тире')],
@@ -73,3 +74,12 @@ class RegisterUserForm(forms.ModelForm):
         model = User
         fields = ('first_name', 'last_name', 'second_name', 'username', 'email', 'password', 'password2',
                   'personal_data')
+
+
+class CreateRequestForm(ModelForm):
+    photo = forms.ImageField(label='Фото', )
+
+    class Meta:
+        model = Request
+        fields = ('name', 'detail', 'category', 'photo')
+        enctype = "multipart/form-data"

@@ -10,4 +10,17 @@
        <p>{{ user.first_name }} {{ user.last_name }} </p>
    {% endif %}
    <h3>Ваши заявки</h3>
+    {% if request_items %}
+        {% for item in request_items %}
+            <div class="d-flex p-3 text-dark bg-light">
+                <img class="col-4" src="{{ item.photo.url }}" alt="Фото заявки">
+                <p class="p-3 mb-2"><b>Наименование:</b> {{ item.name }} <br> <b>Категория:</b> {{ item.category }}
+                    <br> <b>Дата добавления:</b> {{ item.date }} <br> <b>Описание:</b> {{ item.detail }}
+                    <br><b>Статус:</b>{{ item.status }}</p>
+                <button type="submit" class="btn btn-outline-danger" >Удалить</button>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="">Вы еще не создали ни одну заявку</p>
+    {% endif %}
 {% endblock %}

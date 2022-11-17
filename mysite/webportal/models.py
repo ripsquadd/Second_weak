@@ -1,3 +1,5 @@
+from django.core.exceptions import ValidationError
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -21,16 +23,25 @@ class User(AbstractUser):
         pass
 
 
+def validate_image(fieldfile_obj):
+    size_of_file = fieldfile_obj.file.size
+    megabyte_limit = 2.0
+    if size_of_file > megabyte_limit * 1024 * 1024:
+        raise ValidationError('Максимальный размер файла %sMB' % str(megabyte_limit))
+
+
 class Request(models.Model):
     name = models.CharField(max_length=250, verbose_name='Имя', blank=False)
     detail = models.CharField(max_length=250, verbose_name='Описание', blank=False)
     category = models.ForeignKey('Category', verbose_name='Категория', on_delete=models.CASCADE)
     creation_date = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
-    photo = models.ImageField(max_length=250, upload_to="img/", blank=False)
+    photo = models.ImageField(upload_to="img/",
+                              validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg', 'jpeg', 'bmp']),
+                                          validate_image], blank=False)
     status = models.CharField(max_length=60, verbose_name='Статус',
                               choices=(('new', 'новая'), ('work', 'принято в работу'), ('completed', 'выполнено')),
                               default='new', blank=False)
-    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey('User', verbose_name='Заказчик', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return str(self.name) + ' ' + str(self.category)

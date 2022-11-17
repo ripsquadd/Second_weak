@@ -1,0 +1,60 @@
+{% extends "layout/basic.html" %}
+
+{% load bootstrap4 %}
+
+{% block title %} Профиль пользователя {% endblock %}
+
+{% block content %}
+   <h2>Профиль пользователя {{ user.username }}</h2>
+   {% if user.first_name and user.last_name %}
+       <p>{{ user.first_name }} {{ user.last_name }} </p>
+   {% endif %}
+   <h3>Ваши заявки</h3>
+    <div class="d-flex justify-content-around">
+        <button id="all" type="button" class="btn btn-light">Все</button>
+        <button id="new" type="button" class="btn btn-light">Новые</button>
+        <button id="completed" type="button" class="btn btn-light">Законченные</button>
+        <button id="work" type="button" class="btn btn-light">В работе</button>>
+    </div>
+    {% if request_items_new %}
+        {% for item in request_items_new %}
+            <div class="d-flex p-3 text-dark bg-light">
+                <img class="col-4" src="{{ item.photo.url }}" alt="Фото заявки">
+                <p class="p-3 mb-2"><b>Наименование:</b> {{ item.name }} <br> <b>Категория:</b> {{ item.category }}
+                    <br> <b>Дата добавления:</b> {{ item.date }} <br> <b>Описание:</b> {{ item.detail }}
+                    <br><b>Статус:</b>{{ item.status }}</p>
+                <a href="{% url 'webportal:delete' item.pk %}">
+                    <button type="submit" class="btn btn-outline-danger" >Удалить</button>
+                </a>
+            </div>
+        {% endfor %}
+
+<!--    {% elif request_items_work %}-->
+<!--        {% for item in request_items_work %}-->
+<!--            <div class="d-flex p-3 text-dark bg-light">-->
+<!--                <img class="col-4" src="{{ item.photo.url }}" alt="Фото заявки">-->
+<!--                <p class="p-3 mb-2"><b>Наименование:</b> {{ item.name }} <br> <b>Категория:</b> {{ item.category }}-->
+<!--                    <br> <b>Дата добавления:</b> {{ item.date }} <br> <b>Описание:</b> {{ item.detail }}-->
+<!--                    <br><b>Статус:</b>{{ item.status }}</p>-->
+<!--                <a href="{% url 'webportal:delete' item.pk %}">-->
+<!--                    <button type="submit" class="btn btn-outline-danger" >Удалить</button>-->
+<!--                </a>-->
+<!--            </div>-->
+<!--        {% endfor %}-->
+
+<!--    {% elif request_items_completed %}-->
+<!--        {% for item in request_items_completed %}-->
+<!--            <div class="d-flex p-3 text-dark bg-light">-->
+<!--                <img class="col-4" src="{{ item.photo.url }}" alt="Фото заявки">-->
+<!--                <p class="p-3 mb-2"><b>Наименование:</b> {{ item.name }} <br> <b>Категория:</b> {{ item.category }}-->
+<!--                    <br> <b>Дата добавления:</b> {{ item.date }} <br> <b>Описание:</b> {{ item.detail }}-->
+<!--                    <br><b>Статус:</b>{{ item.status }}</p>-->
+<!--                <a href="{% url 'webportal:delete' item.pk %}">-->
+<!--                    <button type="submit" class="btn btn-outline-danger" >Удалить</button>-->
+<!--                </a>-->
+<!--            </div>-->
+<!--        {% endfor %}-->
+    {% else %}
+        <p class="">Вы еще не создали ни одну заявку</p>
+    {% endif %}
+{% endblock %}

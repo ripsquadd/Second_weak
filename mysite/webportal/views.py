@@ -9,7 +9,6 @@ from .forms import RegisterUserForm, CreateRequestForm
 from .models import Request
 
 
-
 def index(request):
     counter = Request.objects.filter(status="work").all().count()
     completed_requests = Request.objects.filter(status="completed").order_by('-creation_date')[:4]
@@ -20,17 +19,10 @@ class WPLoginView(LoginView):
     template_name = 'main/login.html'
 
 
-def profile_status_new(request):
-    request_items = request.user.request_set.filter(status='new').order_by('-creation_date').all()
-    return render(request, 'main/profile.html', context={'request_items': request_items, })
-
-
-
 @login_required
 def profile(request):
     request_items = request.user.request_set.order_by('-creation_date').all()
     return render(request, 'main/profile.html', context={'request_items': request_items, })
-
 
 class WPLogoutView(LoginRequiredMixin, LogoutView):
     template_name = 'main/logout.html'
@@ -63,3 +55,26 @@ def create(request):
         form = CreateRequestForm(initial={'author': request.user})
     context = {'form': form}
     return render(request, 'main/create.html', context)
+
+# def profile_status_new(request):
+#     request_items_new = request.user.request_set.filter(status='new').order_by('-creation_date').all()
+#     return render(request, 'main/profile.html', context={'request_items': request_items_new, })
+#
+# def profile_status_work(request):
+#     request_items_work = request.user.request_set.filter(status='work').order_by('-creation_date').all()
+#     return render(request, 'main/profile.html', context={'request_items': request_items_work, })
+#
+# def profile_status_completed(request):
+#     request_items_completed = request.user.request_set.filter(status='competed').order_by('-creation_date').all()
+#     return render(request, 'main/profile.html', context={'request_items': request_items_completed, })
+
+# @login_required
+# def profileZ(request):
+#     request_items = request.user.request_set.order_by('-creation_date').all()
+#     request_items_new = request.user.request_set.filter(status='new').order_by('-creation_date').all()
+#     request_items_work = request.user.request_set.filter(status='work').order_by('-creation_date').all()
+#     request_items_completed = request.user.request_set.filter(status='competed').order_by('-creation_date').all()
+#     return render(request, 'main/profileZZ.html', context={'request_items': request_items,
+#                                                           'request_items_new': request_items_new,
+#                                                           'request_items_work': request_items_work,
+#                                                           'request_items_completed': request_items_completed})

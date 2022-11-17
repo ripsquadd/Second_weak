@@ -47,7 +47,7 @@ def delete(request, pk):
     request = Request.objects.filter(user=request.user, pk=pk, status='new')
     if request:
         request.delete()
-    return render(request, 'main:profile')
+    return redirect('webportal:profile')
 
 
 @login_required

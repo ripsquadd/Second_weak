@@ -17,7 +17,10 @@
                 <p class="p-3 mb-2"><b>Наименование:</b> {{ item.name }} <br> <b>Категория:</b> {{ item.category }}
                     <br> <b>Дата добавления:</b> {{ item.date }} <br> <b>Описание:</b> {{ item.detail }}
                     <br><b>Статус:</b>{{ item.status }}</p>
-                <button type="submit" class="btn btn-outline-danger" >Удалить</button>
+                <a href="{% url 'webportal:delete' item.pk %}">
+                    <button type="submit" class="btn btn-outline-danger" >Удалить</button>
+                </a>
+
             </div>
         {% endfor %}
     {% else %}
